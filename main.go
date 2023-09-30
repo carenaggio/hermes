@@ -18,6 +18,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"flag"
 	"log"
@@ -148,30 +149,31 @@ func main() {
 	privateKey.Init(keyfile)
 
 	log.Println("Waiting for DB to be become available")
-
-	dbTestChannel := make(chan bool)
-	go func() {
-		for {
-			dbClient, err := ent.Open(config.DataBase.Driver, config.DataBase.DSN)
-			if err == nil {
-				defer dbClient.Close()
-				if dbClient.Schema.Create(context.Background()) == nil {
-					dbTestChannel <- true
-					break
-				}
-			}
-
-			time.Sleep(1 * time.Second)
-			continue
+	for {
+		db, err := sql.Open(config.DataBase.Driver, config.DataBase.DSN)
+		if err != nil {
+			log.Println(err.Error())
+			return
 		}
-	}()
 
-	select {
-	case <-dbTestChannel:
-		log.Println("DB is now available")
-	case <-time.After(1 * time.Minute):
-		log.Fatal("Timeout waiting for DB")
+		err = db.Ping()
+		if err == nil {
+			break
+		}
+
+		time.Sleep(1 * time.Second)
+		continue
+
 	}
+
+	dbClient, err := ent.Open(config.DataBase.Driver, config.DataBase.DSN)
+	if err != nil {
+		panic(err)
+	}
+
+	defer dbClient.Close()
+
+	dbClient.Schema.Create(context.Background())
 
 	r := gin.Default()
 	r.GET("/health-check", httpHealthCheck)

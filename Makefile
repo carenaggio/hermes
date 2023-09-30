@@ -6,7 +6,7 @@ ${BINARY_NAME}:
 	go build -o ${BINARY_NAME} *.go
  
 run: ${BINARY_NAME}
-	HERMES_CONFIG=./etc/config.json ./${BINARY_NAME}
+	PORT=8081 HERMES_CONFIG=./etc/config.json ./${BINARY_NAME}
 
 image:
 	podman build -t ghcr.io/carenaggio/hermes .

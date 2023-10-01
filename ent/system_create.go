@@ -27,8 +27,8 @@ func (sc *SystemCreate) SetSystemID(u uuid.UUID) *SystemCreate {
 }
 
 // SetPublicKey sets the "public_key" field.
-func (sc *SystemCreate) SetPublicKey(s string) *SystemCreate {
-	sc.mutation.SetPublicKey(s)
+func (sc *SystemCreate) SetPublicKey(b []byte) *SystemCreate {
+	sc.mutation.SetPublicKey(b)
 	return sc
 }
 
@@ -121,7 +121,7 @@ func (sc *SystemCreate) createSpec() (*System, *sqlgraph.CreateSpec) {
 		_node.SystemID = value
 	}
 	if value, ok := sc.mutation.PublicKey(); ok {
-		_spec.SetField(system.FieldPublicKey, field.TypeString, value)
+		_spec.SetField(system.FieldPublicKey, field.TypeBytes, value)
 		_node.PublicKey = value
 	}
 	if value, ok := sc.mutation.Approved(); ok {

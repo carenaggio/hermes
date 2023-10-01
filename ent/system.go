@@ -20,7 +20,7 @@ type System struct {
 	// SystemID holds the value of the "system_id" field.
 	SystemID uuid.UUID `json:"system_id,omitempty"`
 	// PublicKey holds the value of the "public_key" field.
-	PublicKey string `json:"public_key,omitempty"`
+	PublicKey []byte `json:"public_key,omitempty"`
 	// Approved holds the value of the "approved" field.
 	Approved bool `json:"approved,omitempty"`
 	// LastLogin holds the value of the "last_login" field.
@@ -33,12 +33,12 @@ func (*System) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case system.FieldPublicKey:
+			values[i] = new([]byte)
 		case system.FieldApproved:
 			values[i] = new(sql.NullBool)
 		case system.FieldID, system.FieldLastLogin:
 			values[i] = new(sql.NullInt64)
-		case system.FieldPublicKey:
-			values[i] = new(sql.NullString)
 		case system.FieldSystemID:
 			values[i] = new(uuid.UUID)
 		default:
@@ -69,10 +69,10 @@ func (s *System) assignValues(columns []string, values []any) error {
 				s.SystemID = *value
 			}
 		case system.FieldPublicKey:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field public_key", values[i])
-			} else if value.Valid {
-				s.PublicKey = value.String
+			} else if value != nil {
+				s.PublicKey = *value
 			}
 		case system.FieldApproved:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -126,7 +126,7 @@ func (s *System) String() string {
 	builder.WriteString(fmt.Sprintf("%v", s.SystemID))
 	builder.WriteString(", ")
 	builder.WriteString("public_key=")
-	builder.WriteString(s.PublicKey)
+	builder.WriteString(fmt.Sprintf("%v", s.PublicKey))
 	builder.WriteString(", ")
 	builder.WriteString("approved=")
 	builder.WriteString(fmt.Sprintf("%v", s.Approved))

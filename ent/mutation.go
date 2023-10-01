@@ -34,7 +34,7 @@ type SystemMutation struct {
 	typ           string
 	id            *int
 	system_id     *uuid.UUID
-	public_key    *string
+	public_key    *[]byte
 	approved      *bool
 	last_login    *int64
 	addlast_login *int64
@@ -179,12 +179,12 @@ func (m *SystemMutation) ResetSystemID() {
 }
 
 // SetPublicKey sets the "public_key" field.
-func (m *SystemMutation) SetPublicKey(s string) {
-	m.public_key = &s
+func (m *SystemMutation) SetPublicKey(b []byte) {
+	m.public_key = &b
 }
 
 // PublicKey returns the value of the "public_key" field in the mutation.
-func (m *SystemMutation) PublicKey() (r string, exists bool) {
+func (m *SystemMutation) PublicKey() (r []byte, exists bool) {
 	v := m.public_key
 	if v == nil {
 		return
@@ -195,7 +195,7 @@ func (m *SystemMutation) PublicKey() (r string, exists bool) {
 // OldPublicKey returns the old "public_key" field's value of the System entity.
 // If the System object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SystemMutation) OldPublicKey(ctx context.Context) (v string, err error) {
+func (m *SystemMutation) OldPublicKey(ctx context.Context) (v []byte, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPublicKey is only allowed on UpdateOne operations")
 	}
@@ -403,7 +403,7 @@ func (m *SystemMutation) SetField(name string, value ent.Value) error {
 		m.SetSystemID(v)
 		return nil
 	case system.FieldPublicKey:
-		v, ok := value.(string)
+		v, ok := value.([]byte)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

@@ -59,7 +59,7 @@ func SystemID(v uuid.UUID) predicate.System {
 }
 
 // PublicKey applies equality check predicate on the "public_key" field. It's identical to PublicKeyEQ.
-func PublicKey(v string) predicate.System {
+func PublicKey(v []byte) predicate.System {
 	return predicate.System(sql.FieldEQ(FieldPublicKey, v))
 }
 
@@ -114,68 +114,43 @@ func SystemIDLTE(v uuid.UUID) predicate.System {
 }
 
 // PublicKeyEQ applies the EQ predicate on the "public_key" field.
-func PublicKeyEQ(v string) predicate.System {
+func PublicKeyEQ(v []byte) predicate.System {
 	return predicate.System(sql.FieldEQ(FieldPublicKey, v))
 }
 
 // PublicKeyNEQ applies the NEQ predicate on the "public_key" field.
-func PublicKeyNEQ(v string) predicate.System {
+func PublicKeyNEQ(v []byte) predicate.System {
 	return predicate.System(sql.FieldNEQ(FieldPublicKey, v))
 }
 
 // PublicKeyIn applies the In predicate on the "public_key" field.
-func PublicKeyIn(vs ...string) predicate.System {
+func PublicKeyIn(vs ...[]byte) predicate.System {
 	return predicate.System(sql.FieldIn(FieldPublicKey, vs...))
 }
 
 // PublicKeyNotIn applies the NotIn predicate on the "public_key" field.
-func PublicKeyNotIn(vs ...string) predicate.System {
+func PublicKeyNotIn(vs ...[]byte) predicate.System {
 	return predicate.System(sql.FieldNotIn(FieldPublicKey, vs...))
 }
 
 // PublicKeyGT applies the GT predicate on the "public_key" field.
-func PublicKeyGT(v string) predicate.System {
+func PublicKeyGT(v []byte) predicate.System {
 	return predicate.System(sql.FieldGT(FieldPublicKey, v))
 }
 
 // PublicKeyGTE applies the GTE predicate on the "public_key" field.
-func PublicKeyGTE(v string) predicate.System {
+func PublicKeyGTE(v []byte) predicate.System {
 	return predicate.System(sql.FieldGTE(FieldPublicKey, v))
 }
 
 // PublicKeyLT applies the LT predicate on the "public_key" field.
-func PublicKeyLT(v string) predicate.System {
+func PublicKeyLT(v []byte) predicate.System {
 	return predicate.System(sql.FieldLT(FieldPublicKey, v))
 }
 
 // PublicKeyLTE applies the LTE predicate on the "public_key" field.
-func PublicKeyLTE(v string) predicate.System {
+func PublicKeyLTE(v []byte) predicate.System {
 	return predicate.System(sql.FieldLTE(FieldPublicKey, v))
-}
-
-// PublicKeyContains applies the Contains predicate on the "public_key" field.
-func PublicKeyContains(v string) predicate.System {
-	return predicate.System(sql.FieldContains(FieldPublicKey, v))
-}
-
-// PublicKeyHasPrefix applies the HasPrefix predicate on the "public_key" field.
-func PublicKeyHasPrefix(v string) predicate.System {
-	return predicate.System(sql.FieldHasPrefix(FieldPublicKey, v))
-}
-
-// PublicKeyHasSuffix applies the HasSuffix predicate on the "public_key" field.
-func PublicKeyHasSuffix(v string) predicate.System {
-	return predicate.System(sql.FieldHasSuffix(FieldPublicKey, v))
-}
-
-// PublicKeyEqualFold applies the EqualFold predicate on the "public_key" field.
-func PublicKeyEqualFold(v string) predicate.System {
-	return predicate.System(sql.FieldEqualFold(FieldPublicKey, v))
-}
-
-// PublicKeyContainsFold applies the ContainsFold predicate on the "public_key" field.
-func PublicKeyContainsFold(v string) predicate.System {
-	return predicate.System(sql.FieldContainsFold(FieldPublicKey, v))
 }
 
 // ApprovedEQ applies the EQ predicate on the "approved" field.

@@ -12,7 +12,7 @@ var (
 	SystemsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "system_id", Type: field.TypeUUID, Unique: true},
-		{Name: "public_key", Type: field.TypeString},
+		{Name: "public_key", Type: field.TypeBytes},
 		{Name: "approved", Type: field.TypeBool},
 		{Name: "last_login", Type: field.TypeInt64},
 	}

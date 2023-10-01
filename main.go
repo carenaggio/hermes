@@ -90,7 +90,7 @@ func httpApiLogin(c *gin.Context) {
 
 	system, err := dbClient.System.Query().Where(system.SystemIDEQ(login_msg.SystemId)).Only(c.Request.Context())
 	if ent.IsNotFound(err) {
-		system, err = dbClient.System.Create().SetApproved(false).SetSystemID(login_msg.SystemId).SetPublicKey(string(login_msg.PublicKey)).SetLastLogin(0).Save(c.Request.Context())
+		system, err = dbClient.System.Create().SetApproved(false).SetSystemID(login_msg.SystemId).SetPublicKey(login_msg.PublicKey).SetLastLogin(0).Save(c.Request.Context())
 	}
 	if err != nil {
 		log.Fatalf("DB query error: %v\n", err)

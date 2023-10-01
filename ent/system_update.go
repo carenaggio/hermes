@@ -35,8 +35,8 @@ func (su *SystemUpdate) SetSystemID(u uuid.UUID) *SystemUpdate {
 }
 
 // SetPublicKey sets the "public_key" field.
-func (su *SystemUpdate) SetPublicKey(s string) *SystemUpdate {
-	su.mutation.SetPublicKey(s)
+func (su *SystemUpdate) SetPublicKey(b []byte) *SystemUpdate {
+	su.mutation.SetPublicKey(b)
 	return su
 }
 
@@ -104,7 +104,7 @@ func (su *SystemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(system.FieldSystemID, field.TypeUUID, value)
 	}
 	if value, ok := su.mutation.PublicKey(); ok {
-		_spec.SetField(system.FieldPublicKey, field.TypeString, value)
+		_spec.SetField(system.FieldPublicKey, field.TypeBytes, value)
 	}
 	if value, ok := su.mutation.Approved(); ok {
 		_spec.SetField(system.FieldApproved, field.TypeBool, value)
@@ -142,8 +142,8 @@ func (suo *SystemUpdateOne) SetSystemID(u uuid.UUID) *SystemUpdateOne {
 }
 
 // SetPublicKey sets the "public_key" field.
-func (suo *SystemUpdateOne) SetPublicKey(s string) *SystemUpdateOne {
-	suo.mutation.SetPublicKey(s)
+func (suo *SystemUpdateOne) SetPublicKey(b []byte) *SystemUpdateOne {
+	suo.mutation.SetPublicKey(b)
 	return suo
 }
 
@@ -241,7 +241,7 @@ func (suo *SystemUpdateOne) sqlSave(ctx context.Context) (_node *System, err err
 		_spec.SetField(system.FieldSystemID, field.TypeUUID, value)
 	}
 	if value, ok := suo.mutation.PublicKey(); ok {
-		_spec.SetField(system.FieldPublicKey, field.TypeString, value)
+		_spec.SetField(system.FieldPublicKey, field.TypeBytes, value)
 	}
 	if value, ok := suo.mutation.Approved(); ok {
 		_spec.SetField(system.FieldApproved, field.TypeBool, value)

@@ -31,7 +31,7 @@ type System struct {
 func (System) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("system_id", uuid.New()).Unique(),
-		field.String("public_key"),
+		field.Bytes("public_key"),
 		field.Bool("approved"),
 		field.Int64("last_login"),
 	}

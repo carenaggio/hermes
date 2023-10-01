@@ -55,11 +55,6 @@ func BySystemID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSystemID, opts...).ToFunc()
 }
 
-// ByPublicKey orders the results by the public_key field.
-func ByPublicKey(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPublicKey, opts...).ToFunc()
-}
-
 // ByApproved orders the results by the approved field.
 func ByApproved(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApproved, opts...).ToFunc()

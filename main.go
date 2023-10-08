@@ -121,7 +121,7 @@ func getEnv(key, fallback string) string {
 	return value
 }
 
-func main() {
+func init() {
 	var err error
 
 	configFlag := flag.String("config", getEnv("HERMES_CONFIG", ""), "The hermes configuration file")
@@ -149,22 +149,22 @@ func main() {
 	privateKey.Init(keyfile)
 
 	log.Println("Waiting for DB to be become available")
+
 	for {
 		db, err := sql.Open(config.DataBase.Driver, config.DataBase.DSN)
 		if err != nil {
-			log.Println(err.Error())
-			return
+			log.Fatal("Failed parsing the DB connection string")
 		}
 
 		err = db.Ping()
 		if err == nil {
 			break
 		}
-
 		time.Sleep(1 * time.Second)
-		continue
-
 	}
+}
+
+func main() {
 
 	dbClient, err := ent.Open(config.DataBase.Driver, config.DataBase.DSN)
 	if err != nil {
